@@ -69,12 +69,12 @@ def main(page: ft.Page):
                         title=ft.Text(song.name, weight=ft.FontWeight.W_500),  # Establece el título del ListTile con el nombre de la canción.
                         subtitle=ft.Text(song.author, style=ft.TextStyle(size=12, color=ft.colors.GREY_400)),  # Establece el subtítulo del ListTile con el autor de la canción.
                         leading=ft.Icon(ft.icons.MUSIC_NOTE, color=ft.colors.INDIGO_400),  # Añade un icono de nota musical al ListTile.
-                        selected=song == selected_song,  # Marca el ListTile como seleccionado si la canción es la seleccionada.
+                        selected=selected_song and song.id == selected_song.id,  # Marca el ListTile como seleccionado si la canción es la seleccionada.
                         on_click=lambda _, s=song: show_song_details(s)  # Define la acción al hacer clic en el ListTile para mostrar los detalles de la canción.
                     ),
+                    bgcolor=ft.colors.INDIGO_100 if selected_song and song.id == selected_song.id else None,  # Establece el color de fondo si la canción está seleccionada.
                     border_radius=10,  # Establece el radio del borde del contenedor.
                     ink=True,  # Habilita el efecto de tinta al hacer clic.
-                    on_hover=lambda e: e.control.bgcolor == ft.colors.with_opacity(0.05, ft.colors.GREY) if e.data == "true" else None,  # Cambia el color de fondo al pasar el ratón.
                 )
             )
         page.update()  # Actualiza la página.
@@ -135,6 +135,7 @@ def main(page: ft.Page):
                     ],
                 )
             )
+            update_song_list()  # Actualiza la lista de canciones al volver a la vista principal.
         elif page.route == "/details":  # Verifica si la ruta es la vista de detalles.
             page.views.append(  # Añade la vista de detalles a la página.
                 ft.View(
